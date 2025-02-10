@@ -1,14 +1,29 @@
 import sys
 import torch
-import fairseq
+# from fairseq import fairseq
+from fairseq.fairseq import checkpoint_utils
 import soundfile
 import torch.nn.functional as F
 import torchaudio.sox_effects as ta_sox
 
+import torchaudio
+torchaudio.set_audio_backend("ffmpeg")
+print(f"-----------------{torchaudio.get_audio_backend()}")
+
 model_path = sys.argv[1]
 audio_path = sys.argv[2]
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device_type = None
+
+if torch.cuda.is_available():
+	print(f"-----cuda found")
+	device = torch.device("cuda")
+# elif torch.backends.mps.is_available():
+# 	print(f"-----metal found")
+# 	device = torch.device("mps")
+else:
+	device = torch.device("cpu")
+
 audio, rate = soundfile.read(audio_path, dtype="float32")
 effects = [["gain", "-n"]]
 input_sample, rate = ta_sox.apply_effects_tensor(torch.tensor(audio).unsqueeze(0), rate, effects)
@@ -18,7 +33,7 @@ input_sample = input_sample.float().to(device)
 with torch.no_grad():
 	input_sample = F.layer_norm(input_sample, input_sample.shape)
 
-model, cfg, task = fairseq.checkpoint_utils.load_model_ensemble_and_task([model_path])
+model, cfg, task = checkpoint_utils.load_model_ensemble_and_task([model_path])
 
 print(type(cfg))
 print(cfg)
