@@ -7,15 +7,15 @@ Inference script for CCC-Wav2vec2.0 and Data2Vec-AQC
 
 ``` bash
 git clone https://github.com/Speech-Lab-IITM/fairseq_inference.git
-cd fairseq-0.12.2
+cd fairseq
 pip3 install --editable ./
 pip3 install soundfile
 ```
-In our tests, we used following:
+<!-- In our tests, we used following:
 * Python == 3.8.10
 * torch == 1.12.1
 * torchaudio == 0.12.1
-* CUDA == 11.3
+* CUDA == 11.3 -->
 
 # Usage
 ``` bash
