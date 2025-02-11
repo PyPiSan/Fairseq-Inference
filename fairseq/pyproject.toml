@@ -1,0 +1,11 @@
+[build-system]
+requires = [
+  "wheel",
+  "cython",
+  "wandb",
+  "tensorboardx",
+  "numpy>=1.21.3",
+  "torch>=2.4.1",
+  "setuptools>=18.0",
+]
+build-backend = "setuptools.build_meta"
